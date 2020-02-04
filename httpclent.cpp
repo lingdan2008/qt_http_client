@@ -17,17 +17,35 @@ void HttpClent::RequestURL(QString sUrl)
 
     QUrl url(sUrl);
     QNetworkRequest request(url);
+    QByteArray data = "name=china";
 
     QNetworkReply *pReply = m_pManager->get(request);
+    //QNetworkReply *pReply = m_pManager->post(request, data);
     Q_ASSERT(pReply);
 }
 
 void HttpClent::finishedSlot(QNetworkReply* pReply)
 {
-    QByteArray baData = pReply->readAll();
+    QVariant vStatusCode = pReply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    if(vStatusCode.isValid()) {
+        qDebug() << "status code:" << vStatusCode.toInt();
+    }
+
+    QVariant vReason = pReply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
+    if(vReason.isValid()) {
+        qDebug() << "reason:" << vReason.toString();
+    }
+
+    if(QNetworkReply::NoError == pReply->error()) {
+        QByteArray baData = pReply->readAll();
+
+        qDebug() << __FUNCTION__ << QString(baData);
+
+        emit getHtmlSig(QString(baData));
+    }
+    else {
+        qDebug() << __FUNCTION__ << pReply->errorString();
+    }
+
     pReply->deleteLater();
-
-    qDebug() << __FUNCTION__ << QString(baData);
-
-    emit getHtmlSig(QString(baData));
 }

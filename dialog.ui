@@ -35,7 +35,7 @@
        <item>
         <widget class="QLineEdit" name="lineEdit">
          <property name="text">
-          <string>http://127.0.0.1:8000</string>
+          <string>https://www.globaltimes.cn</string>
          </property>
         </widget>
        </item>
