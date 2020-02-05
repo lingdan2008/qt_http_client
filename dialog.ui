@@ -35,7 +35,17 @@
        <item>
         <widget class="QLineEdit" name="lineEdit">
          <property name="text">
-          <string>https://www.globaltimes.cn</string>
+          <string>http://www.baidu.com</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_2">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
          </property>
         </widget>
        </item>

@@ -11,16 +11,21 @@ HttpClent::HttpClent(QObject *parent) : QObject(parent)
     QObject::connect(m_pManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(finishedSlot(QNetworkReply*)));
 }
 
-void HttpClent::RequestURL(QString sUrl)
+void HttpClent::RequestURL(QString sUrl, QByteArray baData, bool bGet)
 {
     qDebug() << __FUNCTION__ << sUrl;
 
     QUrl url(sUrl);
     QNetworkRequest request(url);
-    QByteArray data = "name=china";
 
-    QNetworkReply *pReply = m_pManager->get(request);
-    //QNetworkReply *pReply = m_pManager->post(request, data);
+    QNetworkReply *pReply;
+    if(bGet) {
+        pReply = m_pManager->get(request);
+    }
+    else {
+        pReply = m_pManager->post(request, baData);
+    }
+
     Q_ASSERT(pReply);
 }
 
@@ -39,9 +44,9 @@ void HttpClent::finishedSlot(QNetworkReply* pReply)
     if(QNetworkReply::NoError == pReply->error()) {
         QByteArray baData = pReply->readAll();
 
-        qDebug() << __FUNCTION__ << QString(baData);
+        qDebug() << __FUNCTION__ << QString::fromUtf8(baData);
 
-        emit getHtmlSig(QString(baData));
+        emit getHtmlSig(QString::fromUtf8(baData));
     }
     else {
         qDebug() << __FUNCTION__ << pReply->errorString();

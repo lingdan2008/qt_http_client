@@ -23,6 +23,8 @@ private slots:
 
     void showHtmlSlot(QString sText);
 
+    void showPostContent(int nIdx);
+
 private:
     Ui::Dialog *ui;
 
